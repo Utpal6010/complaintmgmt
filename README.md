@@ -100,3 +100,33 @@ The repository includes generated reports:
 ---
 
 If you want, I can help produce a production-ready `docker-compose.prod.yml` and add a `nginx` + `gunicorn` setup.
+
+## Production single-click deployment
+
+This repository includes a `docker-compose.prod.yml` to deploy a production-ready stack using `gunicorn` and `nginx`.
+
+1. Build and start the production stack (example with environment variables):
+
+```bash
+export SECRET_KEY="<generate-strong-secret>"
+export ALLOWED_HOSTS="yourdomain.com"
+docker-compose -f docker-compose.prod.yml up --build -d
+```
+
+2. The application will be available on port 80. Static files are served by `nginx` and the application runs under `gunicorn`.
+
+3. To view logs:
+
+```bash
+docker-compose -f docker-compose.prod.yml logs -f
+```
+
+4. To stop and remove the production stack:
+
+```bash
+docker-compose -f docker-compose.prod.yml down -v
+```
+
+Notes:
+- `docker-compose.prod.yml` uses `static_volume` to share collected static files between the `web` and `nginx` services.
+- Ensure you set strong values for `SECRET_KEY` and restrict `ALLOWED_HOSTS` before exposing to the public internet.
