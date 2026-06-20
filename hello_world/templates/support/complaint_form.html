@@ -1,0 +1,28 @@
+{% extends 'support/base.html' %}
+
+{% block title %}New Complaint | Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <h1>Create Complaint</h1>
+    <form method="post" class="form-stack">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label>
+        Title
+        {{ form.title }}
+      </label>
+      <label>
+        Description
+        {{ form.description }}
+      </label>
+      {% if form.assigned_to %}
+      <label>
+        Assign to engineer
+        {{ form.assigned_to }}
+      </label>
+      {% endif %}
+      <button type="submit" class="button">Create complaint</button>
+    </form>
+  </section>
+{% endblock %}

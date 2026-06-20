@@ -1,0 +1,45 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Support Portal{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'main.css' %}">
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a href="{% url 'support:dashboard' %}" class="brand">Support Portal</a>
+        <nav class="site-nav">
+          {% if user.is_authenticated %}
+            <a href="{% url 'support:dashboard' %}">Dashboard</a>
+            <a href="{% url 'support:complaint_list' %}">Complaints</a>
+            <a href="{% url 'support:complaint_create' %}">New Complaint</a>
+            {% if user.support_profile.role == 'owner' or user.support_profile.role == 'manager' %}
+              <a href="{% url 'support:user_create' %}">Create User</a>
+            {% endif %}
+            <a href="{% url 'support:logout' %}" class="button button-light">Logout</a>
+          {% else %}
+            <a href="{% url 'support:login' %}" class="button button-light">Login</a>
+          {% endif %}
+        </nav>
+      </div>
+    </header>
+
+    <main class="container content">
+      {% if messages %}
+        <div class="messages">
+          {% for message in messages %}
+            <div class="message {{ message.tags }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">Red and white support portal with role-based workflow.</div>
+    </footer>
+  </body>
+</html>

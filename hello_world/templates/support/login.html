@@ -1,0 +1,22 @@
+{% extends 'support/base.html' %}
+
+{% block title %}Login | Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel panel-narrow">
+    <h1>Sign In</h1>
+    <form method="post" class="form-stack">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <label>
+        Username
+        {{ form.username }}
+      </label>
+      <label>
+        Password
+        {{ form.password }}
+      </label>
+      <button type="submit" class="button">Login</button>
+    </form>
+  </section>
+{% endblock %}

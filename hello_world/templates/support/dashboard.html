@@ -1,0 +1,57 @@
+{% extends 'support/base.html' %}
+
+{% block title %}Dashboard | Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p class="lead">Your role: <strong>{{ profile.get_role_display }}</strong></p>
+    <div class="dashboard-grid">
+      <article class="card">
+        <h2>Complaints</h2>
+        <p>View and manage complaints for your role.</p>
+        <a href="{% url 'support:complaint_list' %}" class="button button-outline">View complaints</a>
+      </article>
+      <article class="card">
+        <h2>Create Complaint</h2>
+        <p>Submit a new support issue or partner request.</p>
+        <a href="{% url 'support:complaint_create' %}" class="button button-outline">New complaint</a>
+      </article>
+      {% if profile.is_owner or profile.is_manager %}
+      <article class="card">
+        <h2>Add users</h2>
+        <p>Create partners and engineers and assign roles.</p>
+        <a href="{% url 'support:user_create' %}" class="button button-outline">Create user</a>
+      </article>
+      {% endif %}
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Recent Complaints</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Title</th>
+            <th>Status</th>
+            <th>Creator</th>
+            <th>Assigned</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for complaint in complaints|slice:":8" %}
+          <tr>
+            <td><a href="{% url 'support:complaint_detail' complaint.pk %}">{{ complaint.title }}</a></td>
+            <td>{{ complaint.get_status_display }}</td>
+            <td>{{ complaint.creator.username }}</td>
+            <td>{% if complaint.assigned_to %}{{ complaint.assigned_to.username }}{% else %}None{% endif %}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">No complaints found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

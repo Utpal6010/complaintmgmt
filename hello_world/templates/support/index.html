@@ -1,0 +1,11 @@
+{% extends 'support/base.html' %}
+
+{% block title %}Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <h1>Welcome to the Support Portal</h1>
+    <p class="lead">Please sign in to manage complaints, add comments, and coordinate support across owners, managers, partners, and engineers.</p>
+    <a href="{% url 'support:login' %}" class="button">Login</a>
+  </section>
+{% endblock %}

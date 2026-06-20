@@ -1,0 +1,81 @@
+{% extends 'support/base.html' %}
+
+{% block title %}Complaint Detail | Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <div class="panel-heading">
+      <h1>{{ complaint.title }}</h1>
+      <span class="status-pill status-{{ complaint.status }}">{{ complaint.get_status_display }}</span>
+    </div>
+
+    <div class="meta-row">
+      <div>Created by: {{ complaint.creator.username }}</div>
+      <div>Assigned to: {% if complaint.assigned_to %}{{ complaint.assigned_to.username }}{% else %}Unassigned{% endif %}</div>
+      <div>Updated: {{ complaint.updated_at|date:'Y-m-d H:i' }}</div>
+    </div>
+
+    <div class="section-block">
+      <h2>Description</h2>
+      <p>{{ complaint.description }}</p>
+    </div>
+
+    <div class="section-block">
+      <h2>Actions</h2>
+      <form method="post" class="form-inline">
+        {% csrf_token %}
+        {% if profile.is_owner or profile.is_manager %}
+          <label>
+            Assign engineer
+            <select name="assigned_to">
+              <option value="">Unassigned</option>
+              {% for engineer in engineers %}
+                <option value="{{ engineer.pk }}" {% if complaint.assigned_to == engineer %}selected{% endif %}>{{ engineer.username }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <button type="submit" name="assign" class="button button-outline">Assign</button>
+        {% endif %}
+
+        {% if profile.is_owner or profile.is_manager or profile.is_engineer %}
+          <label>
+            Status
+            <select name="status">
+              {% for value,label in status_choices %}
+                <option value="{{ value }}" {% if complaint.status == value %}selected{% endif %}>{{ label }}</option>
+              {% endfor %}
+            </select>
+          </label>
+          <button type="submit" name="status" class="button button-outline">Update status</button>
+        {% endif %}
+      </form>
+    </div>
+
+    <div class="section-block">
+      <h2>Comments</h2>
+      <div class="comments">
+        {% for comment in comments %}
+          <div class="comment">
+            <div class="comment-header">
+              <strong>{{ comment.author.username }}</strong>
+              <span>{{ comment.created_at|date:'Y-m-d H:i' }}</span>
+            </div>
+            <p>{{ comment.text }}</p>
+          </div>
+        {% empty %}
+          <p>No comments yet.</p>
+        {% endfor %}
+      </div>
+
+      <form method="post" class="form-stack">
+        {% csrf_token %}
+        {{ comment_form.non_field_errors }}
+        <label>
+          Add comment
+          {{ comment_form.text }}
+        </label>
+        <button type="submit" name="comment" class="button">Post comment</button>
+      </form>
+    </div>
+  </section>
+{% endblock %}
