@@ -78,26 +78,33 @@ textarea {
   padding: 0.85rem 1.2rem;
   border-radius: 999px;
   cursor: pointer;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.12s ease, box-shadow 0.12s ease, background-color 0.12s ease, color 0.12s ease;
 }
 
 .button {
-  background: white;
-  color: var(--primary);
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 6px 18px rgba(200, 0, 0, 0.12);
+  border: 1px solid var(--primary-dark);
+}
+
+.button:hover {
+  transform: translateY(-1px);
+  background: var(--primary-dark);
 }
 
 .button-light {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.12);
   color: white;
+  border: 1px solid rgba(255,255,255,0.12);
 }
 
 .button-outline {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
+  background: white;
+  border: 1px solid var(--primary);
+  color: var(--primary);
 }
 
-.button:hover,
 .button-outline:hover,
 .button-light:hover {
   transform: translateY(-1px);
