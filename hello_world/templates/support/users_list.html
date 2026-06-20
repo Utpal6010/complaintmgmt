@@ -1,0 +1,34 @@
+{% extends 'support/base.html' %}
+
+{% block title %}Users | Support Portal{% endblock %}
+
+{% block content %}
+  <section class="panel">
+    <h1>Users</h1>
+    <p>Accounts and roles for the support portal.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Active</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in users %}
+          <tr>
+            <td>{{ p.user.username }}</td>
+            <td>{{ p.user.email }}</td>
+            <td>{{ p.get_role_display }}</td>
+            <td>{{ p.is_active }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="4">No users found.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{% endblock %}

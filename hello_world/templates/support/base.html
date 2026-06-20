@@ -18,6 +18,8 @@
             <a href="{% url 'support:complaint_create' %}">New Complaint</a>
             {% if user.support_profile.role == 'owner' or user.support_profile.role == 'manager' %}
               <a href="{% url 'support:user_create' %}">Create User</a>
+              <a href="{% url 'support:user_list' %}">Users</a>
+              <a href="{% url 'support:admin_dashboard' %}">Admin</a>
             {% endif %}
             <a href="{% url 'support:logout' %}" class="button button-light">Logout</a>
           {% else %}

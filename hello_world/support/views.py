@@ -11,6 +11,16 @@ from hello_world.support.forms import ComplaintCommentForm, ComplaintForm, Suppo
 from hello_world.support.models import Complaint, ComplaintComment, SupportProfile
 
 
+@login_required
+def user_list(request):
+    profile = getattr(request.user, "support_profile", None)
+    if profile is None or not (profile.is_owner or profile.is_manager):
+        raise Http404
+
+    users = SupportProfile.objects.select_related("user").all().order_by("user__username")
+    return render(request, "support/users_list.html", {"profile": profile, "users": users})
+
+
 def index(request):
     if request.user.is_authenticated:
         return redirect("support:dashboard")
